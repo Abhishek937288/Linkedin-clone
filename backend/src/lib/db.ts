@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const mongoUrl = process.env.mongoUrl;
+const mongoUrl = process.env.MONGODB_URL;
 
 if (!mongoUrl) {
   throw new Error("Missing mongoUrl in environment variables");
