@@ -1,6 +1,7 @@
 import AuthNav from "@/components/custom/AuthNav";
 import { assets } from "../assets/assets";
 import useSignup from "@/hooks/useSignup";
+import { Loader } from "lucide-react";
 
 import { useState } from "react";
 
@@ -11,7 +12,7 @@ interface AuthForm {
 }
 
 const Signuppage = () => {
-  const { isPending, error, signupMutation } = useSignup();
+  const { isPending, signupMutation } = useSignup();
   const [authForm, setAuthForm] = useState<AuthForm>({
     name: "",
     email: "",
@@ -30,11 +31,7 @@ const Signuppage = () => {
   return (
     <div className="w-full mt-5">
       <AuthNav />
-      {error && (
-        <div className="alert alert-error mb-4">
-          <span>{error.message}</span>
-        </div>
-      )}
+
       <main className="mt-20 container flex gap-20 flex-col sm:flex-row px-3">
         <div className="">
           <h1 className="text-3xl mb-5 font-semibold text-gray-700">
@@ -78,16 +75,10 @@ const Signuppage = () => {
             />
 
             <button
-              className="mt-5 py-3 rounded-2xl bg-blue-700 text-white font-semibold border border-black cursor-pointer"
+              className="mt-5 py-3 rounded-2xl bg-blue-700 text-white font-semibold border border-black cursor-pointer text-center flex items-center justify-center"
               type="submit"
             >
-              {isPending ? (
-                <>
-                  <span className="loading loading-spinner  loading-xs"></span>
-                </>
-              ) : (
-                "Create Account"
-              )}
+              {isPending ? <Loader /> : "Create Account"}
             </button>
           </form>
         </div>
@@ -95,7 +86,7 @@ const Signuppage = () => {
           <img src={assets.linkedinsales} alt="" className="rounded-3xl" />
         </div>
       </main>
-      <footer className="mt-6 px-3">{/* footer */}</footer>
+      <footer className="mt-6 px-3"></footer>
     </div>
   );
 };

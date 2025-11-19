@@ -1,7 +1,30 @@
 import AuthNav from "@/components/custom/AuthNav";
 import { assets } from "@/assets/assets";
+import { useState } from "react";
+import useSignin from "@/hooks/useSignin";
+import { Loader } from "lucide-react";
+
+interface SigninForm {
+  email: string;
+  password: string;
+}
 
 const Signinpage = () => {
+  const { isPending, signupMutation } = useSignin();
+  const [authForm, setAuthForm] = useState<SigninForm>({
+    email: "",
+    password: "",
+  });
+
+  const handleOnchange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setAuthForm({ ...authForm, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    signupMutation(authForm);
+  };
+
   return (
     <div className="w-full mt-5">
       <AuthNav />
@@ -11,7 +34,11 @@ const Signinpage = () => {
             {" "}
             Stay connected with your community and career updates.
           </h1>
-          <form action="" className="flex flex-col w-[90vw] md:w-[30vw]">
+          <form
+            action=""
+            className="flex flex-col w-[90vw] md:w-[30vw]"
+            onSubmit={handleSubmit}
+          >
             <label className="block text-gray-700 font-medium mb-1">
               Email
             </label>
@@ -19,6 +46,9 @@ const Signinpage = () => {
               type="text"
               placeholder="...@gamil.com "
               className="w-full border border-gray-400 rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-blue-600"
+              name="email"
+              value={authForm.email}
+              onChange={handleOnchange}
             />
             <label className="block text-gray-700 font-medium mb-1">
               Password
@@ -27,10 +57,14 @@ const Signinpage = () => {
               type="password"
               placeholder="**** "
               className="w-full border border-gray-400 rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-blue-600"
+              name="password"
+              value={authForm.password}
+              onChange={handleOnchange}
             />
 
-            <button className="mt-5 py-3 rounded-2xl bg-blue-700 text-white font-semibold border border-black cursor-pointer">
-              Sign in
+            <button  className="mt-5 py-3 rounded-2xl bg-blue-700 text-white font-semibold border border-black cursor-pointer text-center flex items-center justify-center"
+              type="submit">
+              {isPending ? <Loader /> : "Login"}
             </button>
           </form>
         </div>
