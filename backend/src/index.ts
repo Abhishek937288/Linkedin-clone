@@ -1,18 +1,25 @@
 import "dotenv/config";
-import cookieParser from "cookie-parser";
+import { toNodeHandler } from "better-auth/node";
+import cors from "cors";
 import express from "express";
 
-import connectDb from "./lib/db.js";
+import { auth } from "./lib/auth.js";
 
-const port = Number(process.env.port) || 8080;
+const port: number = Number(process.env.PORT) || 5000;
+const frontendUrl = process.env.FRONTEND_URL;
 
 const app = express();
 
-app.use(express.json());
-app.use(cookieParser());
+app.use(
+  cors({
+    credentials: true,
+    origin: frontendUrl,
+  })
+);
 
-await connectDb();
+app.use(express.json());
+app.use("/api/auth", toNodeHandler(auth));
 
 app.listen(port, () => {
-  console.log(`server is running on port ${String(port)}`);
+  console.log(`Server is running on port ${port.toString()}`);
 });
