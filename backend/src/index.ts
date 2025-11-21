@@ -4,6 +4,9 @@ import cors from "cors";
 import express from "express";
 
 import { auth } from "./lib/auth.js";
+import postRoutes from "./routes/postRoutes.js"
+
+
 
 const port: number = Number(process.env.PORT) || 5000;
 const frontendUrl = process.env.FRONTEND_URL;
@@ -19,6 +22,7 @@ app.use(
 
 app.use(express.json());
 app.use("/api/auth", toNodeHandler(auth));
+app.use("/api/post" , postRoutes);
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port.toString()}`);
