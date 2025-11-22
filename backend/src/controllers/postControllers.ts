@@ -74,7 +74,126 @@ export const getAllPost = async (req: Request, res: Response) => {
   }
 };
 
-export const updatePost =  (req: Request, res: Response) => {
+// to get post
+
+export const getPost = async (req: Request, res: Response) => {
   const { id } = req.params;
-  res.send(`nedd to add ${id}`);
+  const post = await prisma.post.findUnique({
+    include: {
+      author: true,
+      comments: true,
+      likes: true,
+    },
+    where: { id: id },
+  });
+  if (!post) {
+    return res
+      .status(400)
+      .json({ data: null, message: "post not found", success: false });
+  }
+
+  return res
+    .status(200)
+    .json({ data: post, message: "post found successfully", success: true });
+};
+
+// to update the posts
+
+export const updatePost = async (req: Request, res: Response) => {
+  if (!req.user) {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
+  const { id } = req.params; // post id
+
+  // to find the post data including author id
+  const post = await prisma.post.findUnique({
+    include: {
+      author: {
+        select: { id: true },
+      },
+    },
+    where: { id: id },
+  });
+
+  if (!post) {
+    return res
+      .status(404)
+      .json({ data: null, message: "post not found", success: false });
+  }
+
+  // to check user author of the post
+
+  if (post.author.id !== req.user.id) {
+    return res.status(403).json({
+      data: null,
+      message: "user is not authorised to edit post",
+      success: false,
+    });
+  }
+
+  const result = postSchema.safeParse(req.body);
+  if (!result.success) {
+    return res.status(400).json({
+      data: null,
+      message: z.treeifyError(result.error),
+      success: false,
+    });
+  }
+
+  const { content, image, title, video } = result.data;
+
+  const updatePost = await prisma.post.update({
+    data: {
+      content,
+      image: Array.isArray(image) ? image : [image],
+      title,
+      ...(video !== undefined && { video }),
+    },
+    where: { id: id },
+  });
+  return res.status(200).json({
+    data: updatePost,
+    message: "post updated successfully",
+    success: true,
+  });
+};
+
+export const deletePost = async (req: Request, res: Response) => {
+  if (!req.user) {
+    return res
+      .status(400)
+      .json({ data: null, message: "unauthorised", success: false });
+  }
+  const { id } = req.params;
+
+  const post = await prisma.post.findUnique({
+    include: {
+      author: {
+        select: { id: true },
+      },
+    },
+    where: { id: id },
+  });
+
+  if (!post) {
+    return res
+      .status(404)
+      .json({ data: null, message: "post not found", success: false });
+  }
+
+  if (post.author.id !== req.user.id) {
+    return res.status(403).json({
+      data: null,
+      message: "user is not authorised to delete post",
+      success: false,
+    });
+  }
+  const deletePost = await prisma.post.delete({
+    where: { id: id },
+  });
+  return res.status(200).json({
+    data: deletePost,
+    messsage: "post deleted succesfully",
+    success: true,
+  });
 };
