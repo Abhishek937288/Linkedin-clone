@@ -10,7 +10,7 @@ datasource db {
 }
 
 model User {
-  id            String   @id @map("_id")   // ✅ plain string
+  id            String   @id @default(cuid()) @map("_id")  
   email         String   @unique
   password      String?
   name          String?
@@ -20,10 +20,14 @@ model User {
   accounts      Account[]
   sessions      Session[]
   image         String?
+  posts Post[]
+  likes Like[]
+  comment Comment[]
+
 }
 
 model Session {
-  id        String   @id @map("_id")       // ✅ plain string
+  id        String   @id @default(cuid()) @map("_id")   
   userId    String
   user      User     @relation(fields: [userId], references: [id])
   expiresAt DateTime
@@ -37,7 +41,7 @@ model Session {
 }
 
 model Account {
-  id          String   @id @map("_id")     // ✅ plain string
+  id          String   @id @default(cuid()) @map("_id")   
   userId      String
   user        User     @relation(fields: [userId], references: [id])
   provider    String?
@@ -49,11 +53,49 @@ model Account {
 }
 
 model Verification {
-  id         String   @id @map("_id")      // ✅ plain string
+  id      String   @id @default(cuid()) @map("_id")  
   identifier String
   token      String
   value      String
   expiresAt  DateTime
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
+}
+
+model Post {
+  id       String   @id @default(cuid()) @map("_id")
+  title     String
+  content   String?
+  image     String[]
+  video     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  authorId  String   
+  author    User     @relation(fields: [authorId], references: [id])
+
+  comments  Comment[]
+  likes     Like[]
+}
+
+
+model Comment {
+  id       String   @id @default(cuid()) @map("_id")
+  text      String
+  postId    String
+  post      Post     @relation(fields: [postId], references: [id])
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Like{
+  id  String   @id @default(cuid()) @map("_id")
+  userId  String
+  postId String
+  user User @relation(fields:[userId],references:[id])
+  post Post @relation(fields:[postId],references:[id])
+  createdAt DateTime @default(now())
+  @@unique([userId, postId])
 }
