@@ -26,18 +26,17 @@ export const addComment = async (req: Request, res: Response) => {
   }
   const { text } = result.data;
 
-  const comment = await prisma.comment.create({
+   await prisma.comment.create({
     data: {
       postId: id,
       text,
-      user: req.user.name,
       userId: req.user.id,
     },
   });
 
   return res
     .status(200)
-    .json({ data: comment, message: "comment added", success: true });
+    .json({ message: "comment added", success: true });
 };
 
 export const deleteComment = async (req: Request, res: Response) => {
@@ -63,12 +62,11 @@ export const deleteComment = async (req: Request, res: Response) => {
       success: false,
     });
   }
-  const deletedComment = await prisma.comment.delete({
+  await prisma.comment.delete({
     where: { id: id },
   });
 
   return res.status(200).json({
-    data: deletedComment,
     message: "comment deleted successfully",
     success: true,
   });
