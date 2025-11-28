@@ -23,7 +23,10 @@ model User {
   posts Post[]
   likes Like[]
   comment Comment[]
+  friends       String[]
 
+  sentRequests     FriendRequest[]   @relation("SentRequests")
+  receivedRequests FriendRequest[]   @relation("ReceivedRequests")
 }
 
 model Session {
@@ -98,4 +101,15 @@ model Like{
   post Post @relation(fields:[postId],references:[id])
   createdAt DateTime @default(now())
   @@unique([userId, postId])
+}
+
+model FriendRequest{
+ id        String   @id @default(cuid()) @map("_id")
+  senderId  String
+  recipientId String
+  status    String   @default("pending") // pending | accepted
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  sender    User     @relation("SentRequests", fields: [senderId], references: [id])
+  recipient User     @relation("ReceivedRequests", fields: [recipientId], references: [id])
 }
