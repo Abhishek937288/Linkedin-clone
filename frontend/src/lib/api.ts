@@ -20,6 +20,9 @@ export const signUp = async (authForm: SignupForm) => {
   if (res.error) {
     throw new Error(res.error.message);
   }
+ if (res.data?.token) {
+    localStorage.setItem("authToken", res.data.token);
+  }
   return res.data;
 };
 
@@ -30,6 +33,9 @@ export const signIn = async (authForm: SignIn) => {
   });
   if (res.error) {
     throw new Error(res.error.message);
+  }
+  if (res.data?.token) {
+    localStorage.setItem("authToken", res.data.token);
   }
   return res.data;
 };

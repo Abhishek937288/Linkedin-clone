@@ -15,5 +15,6 @@ export const auth = betterAuth({
     enabled: true,
   },
 
+
   trustedOrigins: [process.env.FRONTEND_URL ?? ""],
 });
