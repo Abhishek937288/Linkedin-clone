@@ -10,6 +10,7 @@ import friendRequestRoutes from "./routes/friendRequestRoutes.js";
 import likeRoutes from "./routes/likeRoutes.js";
 import messageRoutes from "./routes/messageRoutes.js";
 import postRoutes from "./routes/postRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
 
 const port: number = Number(process.env.PORT) || 5000;
 const frontendUrl = process.env.FRONTEND_URL;
@@ -28,6 +29,7 @@ app.use("/api/comment", commentRoutes);
 app.use("/api/post/like", likeRoutes);
 app.use("/api/friends", friendRequestRoutes);
 app.use("/api/messages", messageRoutes);
+app.use("/api/user",userRoutes);
 
 server.listen(port, () => {
   console.log(`Server is running on port ${port.toString()}`);

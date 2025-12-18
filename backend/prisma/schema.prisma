@@ -10,23 +10,34 @@ datasource db {
 }
 
 model User {
-  id            String   @id @default(cuid()) @map("_id")  
+  id            String   @id @default(cuid()) @map("_id")
   email         String   @unique
   password      String?
   name          String?
   emailVerified Boolean?
+
+  image         String?   // profile pic
+  backgroundImg String?
+  bio           String?
+  headline      String?
+  location      String?
+  company       String?
+  designation   String?
+  experience    Float?
+  skills        String[]
+
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
+
   accounts      Account[]
   sessions      Session[]
-  image         String?
-  posts Post[]
-  likes Like[]
-  comment Comment[]
+  posts         Post[]
+  likes         Like[]
+  comment       Comment[]
   friends       String[]
 
-  sentRequests     FriendRequest[]   @relation("SentRequests")
-  receivedRequests FriendRequest[]   @relation("ReceivedRequests")
+  sentRequests     FriendRequest[] @relation("SentRequests")
+  receivedRequests FriendRequest[] @relation("ReceivedRequests")
 }
 
 model Session {

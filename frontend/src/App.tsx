@@ -8,11 +8,15 @@ import { io } from "socket.io-client";
 import { Toaster } from "react-hot-toast";
 import ProtectedLayout from "./layouts/ProtectedLayout";
 import Authlayout from "./layouts/Authlayout";
+import Messagepage from "./pages/Messagepage";
+import Networkpage from "./pages/Networkpage";
+
+import Profilepage from "./pages/Profilepage";
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 const token = localStorage.getItem("authToken");
-console.log(token);
+
 
 const socket = io(backendUrl, {
   auth: {
@@ -37,6 +41,9 @@ function App() {
       <Routes>
         <Route element={<ProtectedLayout />}>
           <Route path="/" element={<Homepage />} />
+          <Route path="/message" element={<Messagepage />} />
+          <Route path="/network" element={<Networkpage />} />
+          <Route path="/profile" element={<Profilepage />} />
         </Route>
         <Route element={<Authlayout />}>
           <Route path="/signup" element={<Signuppage />} />
