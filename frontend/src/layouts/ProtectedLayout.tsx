@@ -4,26 +4,31 @@ import { useEffect, useState } from "react";
 import { userAuthstore } from "@/store/authStore";
 import Navbar from "@/components/custom/Navbar";
 
+import useGetUserData from "@/hooks/useGetUserData";
+
 const ProtectedLayout = () => {
   const { setUser, user } = userAuthstore();
   const [loading, setLoading] = useState(true);
+  const { userData } = useGetUserData();
 
   useEffect(() => {
-    const checkSession = async () => {
+    const init = async () => {
+      // 1️⃣ Check auth ONLY
       const { data } = await authClient.getSession();
-      console.log(data?.user);
+      if (!data?.user) {
+        setLoading(false);
+        return;
+      }
 
-      if (data?.user) {
-        setUser(data.user);
+      if (userData) {
+        setUser(userData);
       }
 
       setLoading(false);
     };
 
-    checkSession();
-  }, [setUser]);
-
-  console.log(user);
+    init();
+  }, [setUser , userData]);
 
   if (loading) return null;
 
