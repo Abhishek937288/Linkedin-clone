@@ -24,12 +24,15 @@ import {
   SquarePlay,
 } from "lucide-react";
 import { useState } from "react";
+import useAllPosts from "@/hooks/useAllPosts";
 
 
 
 const Homepage = () => {
   const { user } = userAuthstore();
   const navigate = useNavigate();
+  const {postsData} = useAllPosts();
+  
  
   const [expanded, setExpanded] = useState(false);
   return (
@@ -209,9 +212,9 @@ const Homepage = () => {
             </div>
           </div>
           <div className="flex flex-col gap-3">
-            <Postcard />
-            <Postcard />
-            <Postcard />
+          {postsData?.data.map((post: any) => (
+        <Postcard key={post.id} post={post} />
+      ))}
           </div>
         </div>
         <div className="sm:col-span-1 flex flex-col gap-2   mt-10">

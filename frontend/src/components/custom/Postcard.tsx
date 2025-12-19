@@ -1,39 +1,80 @@
-import { assets } from "@/assets/assets";
-import { Heart, MessageCircle } from "lucide-react";
+import { Heart, MessageCircle, Trash } from "lucide-react";
 import { useState } from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { addComment, deleteComment } from "@/lib/postApi";
+import toast from "react-hot-toast";
+import { AxiosError } from "axios";
+import { userAuthstore } from "@/store/authStore";
+import { assets } from "@/assets/assets";
 
-const Postcard = () => {
+const Postcard = ({ post }: any) => {
+  const queryClient = useQueryClient();
   const [showComments, setShowComments] = useState(false);
+  const { user } = userAuthstore();
+
+  const [comment, setComment] = useState("");
+
+  const handleOnCommentChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setComment(e.target.value);
+  };
+
+  const addCommentMutation = useMutation({
+    mutationFn: addComment,
+    onSuccess: (response) => {
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
+      toast.success(response.message);
+      setComment("");
+    },
+    onError: (error: AxiosError<any>) => {
+      toast.error(error.response?.data?.messagge);
+    },
+  });
+
+  const deleteCommentMutation = useMutation({
+    mutationFn: deleteComment,
+    onSuccess: (response) => {
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
+      toast.success(response.message);
+    },
+    onError: (error: AxiosError<any>) => {
+      toast.error(error.response?.data?.messagge);
+    },
+  });
+
   return (
     <div className="bg-white rounded-xl border border-gray-200 p-4 mb-5">
       {/* Header */}
       <div className="flex items-center gap-3 mb-3">
-        <img
-          src="https://images.unsplash.com/photo-1521791136064-7986c2920216"
-          className="h-10 w-10 rounded-full"
-          alt=""
-        />
+        <img src={post.author.image} className="h-10 w-10 rounded-full" />
         <div>
-          <h4 className="font-semibold">Ganesh</h4>
-          <p className="text-xs text-gray-500"></p>
+          <h4 className="font-semibold">{post.author.name}</h4>
+          <p className="text-xs text-gray-500">
+            {new Date(post.createdAt).toDateString()}
+          </p>
         </div>
       </div>
 
-      <p className="text-sm mb-3">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt sint
-        reiciendis Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad
-        veniam provident explicabo non, facilis ipsa ullam nisi cupiditate a
-        architecto dolorum ipsam deserunt officia. Culpa dolorum similique qui!
-        Quasi, nihil!{" "}
-      </p>
+      {/* Content */}
+      <p className="text-sm mb-3">{post.content}</p>
 
-      <div className="grid grid-cols-1 gap-2 mb-3">
-        <img src={assets.signin} className="rounded-lg object-cover w-full" />
-      </div>
+      {/* Images */}
+      {post.image?.length > 0 && (
+        <div className="grid grid-cols-1 gap-2 mb-3">
+          {post.image.map((img: string, index: number) => (
+            <img
+              key={index}
+              src={img}
+              className="rounded-lg object-cover w-full"
+            />
+          ))}
+        </div>
+      )}
 
+      {/* Like */}
       <div className="flex justify-between text-sm text-gray-600 pt-2 border-t">
         <span className="flex items-center gap-1 cursor-pointer">
           <Heart size={16} />
+          {post.likes.length}
         </span>
 
         <span
@@ -41,27 +82,58 @@ const Postcard = () => {
           onClick={() => setShowComments(!showComments)}
         >
           <MessageCircle size={16} />
+          {post.comments.length}
         </span>
       </div>
 
+      {/* Comments */}
       {showComments && (
         <div className="mt-3 border-t pt-3">
+          {post.comments.length === 0 && (
+            <p className="text-sm text-gray-400">No comments yet</p>
+          )}
+
           <div className="flex gap-2 mb-3">
-            <img src={assets.signin} className="h-8 w-8 rounded-full" alt="" />
+            <img
+              src={user?.image ?? assets.li}
+              className="h-8 w-8 rounded-full"
+              alt=""
+            />
             <input
               type="text"
               placeholder="Write a comment..."
               className="w-full border rounded-full px-4 py-2 text-sm outline-none"
+              onChange={handleOnCommentChange}
+              value={comment}
             />
+            <button className="px-3 max-sm:text-sm max-sm:px-2 bg-blue-600 text-white rounded-lg cursor-pointer"onClick={()=>{
+              addCommentMutation.mutate({ comment, id: post.id })
+              
+            }}>
+              Add
+            </button>
           </div>
 
-          <div className="flex gap-2">
-            <img src={assets.signin} className="h-8 w-8 rounded-full" alt="" />
-            <div className="bg-gray-100 rounded-xl px-3 py-2">
-              <p className="text-xs font-semibold">Abhishek</p>
-              <p className="text-sm">Nice post 🔥</p>
+          {post.comments.map((comment: any) => (
+            <div key={comment.id} className="flex gap-2 mb-2">
+              <img src={comment.user.image} className="h-8 w-8 rounded-full" />
+              <div className="bg-gray-100 rounded-xl px-3 py-2 flex items-center gap-2">
+                <div className="flex flex-col">
+                  {" "}
+                  <p className="font-semibold">{comment.user.name}</p>
+                  <p className="text-sm">{comment.text}</p>
+                </div>
+                {user?.id == comment.user.id && (
+                  <button
+                    className="cursor-pointer"
+                    onClick={() => deleteCommentMutation.mutate(comment.id)}
+                  >
+                    <Trash color="red" size={15} />
+                  </button>
+                )}
+              </div>
             </div>
-          </div>
+          ))}
         </div>
       )}
     </div>
