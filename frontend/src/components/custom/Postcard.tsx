@@ -1,18 +1,39 @@
 import { Heart, MessageCircle, Trash } from "lucide-react";
 import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { addComment, deleteComment } from "@/lib/postApi";
+import { addComment, addLike, deleteComment, removeLike } from "@/lib/postApi";
 import toast from "react-hot-toast";
-import { AxiosError } from "axios";
+
 import { userAuthstore } from "@/store/authStore";
 import { assets } from "@/assets/assets";
+import type { Post, Comment } from "@/types/postType";
 
-const Postcard = ({ post }: any) => {
+interface PostCardProps {
+  post: Post;
+}
+
+const Postcard: React.FC<PostCardProps> = ({ post }) => {
   const queryClient = useQueryClient();
   const [showComments, setShowComments] = useState(false);
   const { user } = userAuthstore();
 
   const [comment, setComment] = useState("");
+
+  const myUserId = user?.id;
+
+  const isLiked: boolean = post.likes.some((like) => like.userId === myUserId);
+
+  const likeMutation = useMutation({
+    mutationFn: isLiked ? removeLike : addLike,
+    onSuccess: (response) => {
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
+      toast.success(response.message);
+      setComment("");
+    },
+    onError: (error) => {
+      console.log("ON ERROR ", error);
+    },
+  });
 
   const handleOnCommentChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setComment(e.target.value);
@@ -24,9 +45,10 @@ const Postcard = ({ post }: any) => {
       queryClient.invalidateQueries({ queryKey: ["posts"] });
       toast.success(response.message);
       setComment("");
+      console.log(response);
     },
-    onError: (error: AxiosError<any>) => {
-      toast.error(error.response?.data?.messagge);
+    onError: (error) => {
+      console.log("ON ERROR 👉", error);
     },
   });
 
@@ -36,8 +58,8 @@ const Postcard = ({ post }: any) => {
       queryClient.invalidateQueries({ queryKey: ["posts"] });
       toast.success(response.message);
     },
-    onError: (error: AxiosError<any>) => {
-      toast.error(error.response?.data?.messagge);
+    onError: (error) => {
+      console.log("ON ERROR 👉", error);
     },
   });
 
@@ -72,10 +94,20 @@ const Postcard = ({ post }: any) => {
 
       {/* Like */}
       <div className="flex justify-between text-sm text-gray-600 pt-2 border-t">
-        <span className="flex items-center gap-1 cursor-pointer">
-          <Heart size={16} />
+        <button
+          className="flex items-center gap-1 cursor-pointer"
+          onClick={() => {
+            likeMutation.mutate(post.id);
+          }}
+          disabled={likeMutation.isPending}
+        >
+          {isLiked ? (
+            <Heart size={16} className="text-red-500 fill-red-500" />
+          ) : (
+            <Heart size={16} />
+          )}
           {post.likes.length}
-        </span>
+        </button>
 
         <span
           className="flex items-center gap-1 cursor-pointer"
@@ -89,10 +121,6 @@ const Postcard = ({ post }: any) => {
       {/* Comments */}
       {showComments && (
         <div className="mt-3 border-t pt-3">
-          {post.comments.length === 0 && (
-            <p className="text-sm text-gray-400">No comments yet</p>
-          )}
-
           <div className="flex gap-2 mb-3">
             <img
               src={user?.image ?? assets.li}
@@ -106,15 +134,22 @@ const Postcard = ({ post }: any) => {
               onChange={handleOnCommentChange}
               value={comment}
             />
-            <button className="px-3 max-sm:text-sm max-sm:px-2 bg-blue-600 text-white rounded-lg cursor-pointer"onClick={()=>{
-              addCommentMutation.mutate({ comment, id: post.id })
-              
-            }}>
+            <button
+              className="px-3 max-sm:text-sm max-sm:px-2 bg-blue-600 text-white rounded-lg cursor-pointer"
+              onClick={() => {
+                addCommentMutation.mutate({ comment, id: post.id });
+              }}
+              disabled={addCommentMutation.isPending}
+            >
               Add
             </button>
           </div>
 
-          {post.comments.map((comment: any) => (
+          {post.comments.length === 0 && (
+            <p className="text-sm text-gray-400">No comments yet</p>
+          )}
+
+          {post.comments.map((comment: Comment) => (
             <div key={comment.id} className="flex gap-2 mb-2">
               <img src={comment.user.image} className="h-8 w-8 rounded-full" />
               <div className="bg-gray-100 rounded-xl px-3 py-2 flex items-center gap-2">
@@ -127,6 +162,7 @@ const Postcard = ({ post }: any) => {
                   <button
                     className="cursor-pointer"
                     onClick={() => deleteCommentMutation.mutate(comment.id)}
+                    disabled={deleteCommentMutation.isPending}
                   >
                     <Trash color="red" size={15} />
                   </button>
