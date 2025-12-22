@@ -1,6 +1,7 @@
 import axios from "axios";
 import { authClient } from "../lib/authClient";
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
+import type { createPost } from "@/types/postType";
 
 interface SignupForm {
   name: string;
@@ -80,4 +81,12 @@ export const updateUserData = async (data: UpdateUserData) => {
   });
   const updateuser = res.data;
   return updateuser;
+};
+
+export const addPost = async (data: createPost) => {
+  const res = await axios.post(`${backendUrl}/api/post`, data, {
+    withCredentials: true,
+  });
+  const postData = res.data;
+  return postData;
 };

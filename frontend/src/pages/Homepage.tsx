@@ -1,6 +1,7 @@
 import { assets } from "@/assets/assets";
 import Postcard from "@/components/custom/Postcard";
 import { useNavigate } from "react-router-dom";
+import type { Post } from "@/types/postType";
 
 import {
   Dialog,
@@ -9,6 +10,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogOverlay,
+  DialogDescription,
 } from "@/components/ui/dialog";
 import { userAuthstore } from "@/store/authStore";
 
@@ -25,15 +27,14 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import useAllPosts from "@/hooks/useAllPosts";
-
-
+import AddPostForm from "@/components/custom/AddPostForm";
 
 const Homepage = () => {
   const { user } = userAuthstore();
   const navigate = useNavigate();
-  const {postsData} = useAllPosts();
-  
- 
+  const { postsData } = useAllPosts();
+  const [boxOpen, setBoxOpen] = useState(false);
+
   const [expanded, setExpanded] = useState(false);
   return (
     <div className="bg-gray-100 min-h-[calc(100vh-64px)] pb-5 ">
@@ -125,11 +126,11 @@ const Homepage = () => {
           <div className="border border-gray-300 shadow-lg w-full h-30 rounded-xl bg-white flex flex-col gap-5 ">
             <div className="flex gap-2 items-center px-2 pt-3 ">
               <img
-                src={assets.signin}
+                src={user?.image || assets.li}
                 className="h-10 w-10 rounded-full"
                 alt=""
               />
-              <Dialog>
+              <Dialog open={boxOpen} onOpenChange={setBoxOpen}>
                 <DialogTrigger asChild>
                   <button className="w-full h-12 rounded-2xl px-3 border border-gray-500 text-left hover:bg-gray-50">
                     Start a post
@@ -147,13 +148,15 @@ const Homepage = () => {
 
                 <DialogContent
                   className="
-          w-full h-[80vh] max-w-2xl
+          w-full max-w-2xl
           bg-white
           rounded-xl
           p-6
           shadow-xl
           top-[50%]
           left-1/2 -translate-x-1/2
+          max-h-[80vh]
+          overflow-y-auto
 
         "
                 >
@@ -161,7 +164,7 @@ const Homepage = () => {
                     <DialogTitle className="text-xl font-semibold">
                       <div className="flex gap-4 items-center">
                         <img
-                          src={assets.signin}
+                          src={user?.image || assets.li}
                           className="h-10 w-10 rounded-full"
                           alt=""
                         />
@@ -173,26 +176,11 @@ const Homepage = () => {
                         </h4>
                       </div>
                     </DialogTitle>
+                    <DialogDescription className="text-gray-700  flex flex-col justify-center font-md text-lg max-sm:text-sm">
+                      Add post *Are mandatory
+                    </DialogDescription>
                   </DialogHeader>
-                  <form action="" className=" flex flex-col gap-5 ">
-                    <textarea
-                      name=""
-                      className="border-none w-full h-60 outline-none"
-                      id=""
-                      placeholder="write something about your post"
-                    />
-                    <div className="flex items-center pb-5  gap-5 border-b border-gray-400">
-                      <Image color="#1d47c3" />
-                      <Image color="#1d47c3" />
-                      <Image color="#1d47c3" />
-                      <Image color="#1d47c3" />
-                    </div>
-                    <div className="flex flex-row-reverse">
-                      <button className="px-5 rounded-xl py-1 border border-gray-200 cursor-pointer bg-blue-500 text-white font-semibold hover:px-6">
-                        Post
-                      </button>
-                    </div>
-                  </form>
+                  <AddPostForm closeDilog={() => setBoxOpen(false)} />
                 </DialogContent>
               </Dialog>
             </div>
@@ -212,9 +200,9 @@ const Homepage = () => {
             </div>
           </div>
           <div className="flex flex-col gap-3">
-          {postsData?.data.map((post: any) => (
-        <Postcard key={post.id} post={post} />
-      ))}
+            {postsData?.data.map((post: Post) => (
+              <Postcard key={post.id} post={post} />
+            ))}
           </div>
         </div>
         <div className="sm:col-span-1 flex flex-col gap-2   mt-10">

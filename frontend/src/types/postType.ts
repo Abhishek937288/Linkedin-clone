@@ -30,3 +30,14 @@ export interface Post {
   comments: Comment[];
   likes: Like[]; 
 }
+
+export interface  AddPostFormProps {
+  closeDilog: ()=> void;
+}
+
+export interface createPost {
+  title:string,
+  content?:string,
+  image : string | string[],
+  video?:string;
+}
