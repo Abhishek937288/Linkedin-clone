@@ -1,18 +1,15 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-// import { useNavigate } from "react-router-dom";
-import { addPost } from "../lib/api";
+import { deletePost } from "@/lib/api";
 import toast from "react-hot-toast";
 
-const useAddPost = () => {
+const useDeletePost = () => {
   const queryClient = useQueryClient();
-  //   const navigate = useNavigate();
-
-  const post = useMutation({
-    mutationFn: addPost,
+  const deletedPost = useMutation({
+    mutationFn: deletePost,
     onSuccess: (response) => {
       queryClient.invalidateQueries({ queryKey: ["posts"] });
+      console.log(response);
       toast.success(response.message);
-     
     },
     onError: (error) => {
       console.log("ON ERROR", error);
@@ -21,10 +18,10 @@ const useAddPost = () => {
   });
 
   return {
-    addPost: post.mutate,
-    addingPost: post.isPending,
-    postError: post.error,
+    deletePost: deletedPost.mutate,
+    pendingDelete: deletedPost.isPending,
+    deletePostError: deletedPost.error,
   };
 };
 
-export default useAddPost;
+export default useDeletePost;

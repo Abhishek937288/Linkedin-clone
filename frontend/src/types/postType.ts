@@ -41,3 +41,7 @@ export interface createPost {
   image : string | string[],
   video?:string;
 }
+
+export interface deletePostId{
+  id :string
+}

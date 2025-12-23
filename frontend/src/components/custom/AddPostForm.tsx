@@ -10,7 +10,7 @@ const CLOUDINARY_PRESET = import.meta.env.VITE_CLOUDINARY_PRESET;
 
 const AddPostForm = ({ closeDilog }: AddPostFormProps) => {
   const navigate = useNavigate();
-  const { addPost } = useAddPost();
+  const { addPost, addingPost } = useAddPost();
   const [uploading, setUploading] = useState(false);
   const [postData, setPostData] = useState({
     title: "",
@@ -142,11 +142,11 @@ const AddPostForm = ({ closeDilog }: AddPostFormProps) => {
 
         <div className="flex flex-row-reverse">
           <button
-            disabled={uploading}
+            disabled={uploading || addingPost}
             type="submit"
             className="px-5 rounded-xl py-1 border border-gray-200 cursor-pointer bg-blue-500 text-white font-semibold hover:px-6"
           >
-            {uploading ? "Uploading..." : "Post"}
+            {uploading || addingPost ? "Uploading..." : "Post"}
           </button>
           <button onClick={() => closeDilog()}>close form</button>
         </div>

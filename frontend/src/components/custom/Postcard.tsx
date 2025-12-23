@@ -7,6 +7,7 @@ import toast from "react-hot-toast";
 import { userAuthstore } from "@/store/authStore";
 import { assets } from "@/assets/assets";
 import type { Post, Comment } from "@/types/postType";
+import useDeletePost from "@/hooks/useDeletePost";
 
 interface PostCardProps {
   post: Post;
@@ -18,6 +19,7 @@ const Postcard: React.FC<PostCardProps> = ({ post }) => {
   const { user } = userAuthstore();
   const [comment, setComment] = useState("");
   const myUserId = user?.id;
+  const { deletePost } = useDeletePost();
 
   // slider state
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -68,14 +70,25 @@ const Postcard: React.FC<PostCardProps> = ({ post }) => {
   return (
     <div className="bg-white rounded-xl border border-gray-200 p-4 mb-5">
       {/* Header */}
-      <div className="flex items-center gap-3 mb-3">
-        <img src={post.author.image} className="h-10 w-10 rounded-full" />
-        <div>
-          <h4 className="font-semibold">{post.author.name}</h4>
-          <p className="text-xs text-gray-500">
-            {new Date(post.createdAt).toDateString()}
-          </p>
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-3 mb-3">
+          <img src={post.author.image} className="h-10 w-10 rounded-full" />
+          <div>
+            <h4 className="font-semibold">{post.author.name}</h4>
+            <p className="text-xs text-gray-500">
+              {new Date(post.createdAt).toDateString()}
+            </p>
+          </div>
         </div>
+        {user?.id == post.author.id && (
+          <div>
+            <Trash
+              color="red"
+              className="hover:h-8 w-8 cursor-pointer"
+              onClick={() => deletePost(post.id)}
+            />
+          </div>
+        )}
       </div>
 
       {/* title */}

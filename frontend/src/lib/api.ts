@@ -90,3 +90,11 @@ export const addPost = async (data: createPost) => {
   const postData = res.data;
   return postData;
 };
+
+export const deletePost = async (id: string) => {
+  const res = await axios.delete(`${backendUrl}/api/post/${id}`, {
+    withCredentials: true,
+  });
+  const data = res.data;
+  return data;
+};
