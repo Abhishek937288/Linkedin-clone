@@ -39,10 +39,10 @@ const Homepage = () => {
 
   return (
     <div className="bg-gray-100 min-h-[calc(100vh-64px)] pb-5 ">
-      <div className="grid grid-cols-1 h-full sm:grid-cols-4 gap-5 mx-3 sm:mx-10 mb-5   ">
-        <div className="sm:col-span-1 h-160  sm:sticky  max-sm:mt-5  top-20 flex flex-col items-center px-5  ">
-          <div className="border border-gray-200 bg-white pb-2 w-55 rounded-2xl ">
-            <div className="relative">
+      <div className="grid grid-cols-1 h-full sm:grid-cols-4 gap-5 mx- sm:mx-10 mb-5   ">
+        <div className="sm:col-span-1 h-160 w-[95%] mt-2  sm:sticky  max-sm:mt-5  top-20 flex flex-col items-center px-  ">
+          <div className="border border-gray-200 bg-white pb-2  rounded-2xl ">
+            <div className="relative  ">
               <img
                 src={
                   user?.backgroundImg ||
@@ -56,8 +56,8 @@ const Homepage = () => {
                 className="w-15 h-15 rounded-full border-gray-50 absolute left-4 -bottom-10"
               />
             </div>
-            <div className="flex flex-col items-center gap-3 pt-5 px-2 ">
-              <h4 className="text-lg font-semibold">
+            <div className="flex flex-col items-center gap-3 pt-5 px-2  ">
+              <h4 className="text-lg font-semibold mt-3">
                 {user?.name
                   ? user.name.charAt(0).toUpperCase() + user.name.slice(1)
                   : ""}
@@ -78,14 +78,14 @@ const Homepage = () => {
               </button>
             </div>
           </div>
-          <div className="border flex flex-col px-5 pt-2 gap-1 border-gray-200 bg-white h-15 w-55 rounded-2xl hover:underline">
+          <div className="border flex flex-col px-5 pt-2 gap-1 border-gray-200  bg-white h-15 w-[95%] rounded-2xl hover:underline">
             <div className="flex  justify-between items-center">
               <p className="text-sm ">connections</p>{" "}
               <p className="text-xs text-blue-600 opacity-90">14</p>
             </div>
             <p className="text-xs opacity-80 ">Grow your network</p>
           </div>
-          <div className=" flex flex-col px-5 border border-gray-200 bg-white h-15 w-55 rounded-2xl pt-1 gap-1">
+          <div className=" flex flex-col px-5 border border-gray-200 bg-white h-15 w-[95%] rounded-2xl pt-1 gap-1">
             <p className="text-xs  opacity-80">
               Access Exlusive tools & Insights
             </p>
@@ -96,7 +96,7 @@ const Homepage = () => {
               </p>
             </div>
           </div>
-          <div className="border flex flex-col gap-2 border-gray-200 bg-white h-33 w-55 rounded-2xl px-5 pt-3">
+          <div className="border flex flex-col gap-2 border-gray-200 bg-white h-33 w-[95%] rounded-2xl px-5 pt-3">
             <div className="flex items-center gap-2 cursor-pointer">
               <BookMarked size={15} className="opacity-90" />{" "}
               <p className="text-sm opacity-90 hover:underline hover:opacity-100">
