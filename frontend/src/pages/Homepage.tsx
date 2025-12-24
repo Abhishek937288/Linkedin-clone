@@ -31,6 +31,7 @@ import AddPostForm from "@/components/custom/AddPostForm";
 
 const Homepage = () => {
   const { user } = userAuthstore();
+
   const navigate = useNavigate();
   const { postsData } = useAllPosts();
   const [boxOpen, setBoxOpen] = useState(false);
@@ -81,7 +82,7 @@ const Homepage = () => {
           <div className="border flex flex-col px-5 pt-2 gap-1 border-gray-200  bg-white h-15 w-[95%] rounded-2xl hover:underline">
             <div className="flex  justify-between items-center">
               <p className="text-sm ">connections</p>{" "}
-              <p className="text-xs text-blue-600 opacity-90">14</p>
+              <p className="text-xs text-blue-600 opacity-90">{user?.friends?.length}</p>
             </div>
             <p className="text-xs opacity-80 ">Grow your network</p>
           </div>

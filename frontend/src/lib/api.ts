@@ -98,3 +98,37 @@ export const deletePost = async (id: string) => {
   const data = res.data;
   return data;
 };
+
+// network
+
+export const getUserFriends = async () => {
+  const res = await axios.get(`${backendUrl}/api/friends`, {
+    withCredentials: true,
+  });
+  const usersFriends = res.data;
+  return usersFriends;
+};
+
+export const getRecommendedUsers = async () => {
+  const res = await axios.get(`${backendUrl}/api/friends/recommendedFriends`, {
+    withCredentials: true,
+  });
+  const recommendedUsers = res.data;
+  return recommendedUsers;
+};
+
+export const getSentReqs = async () => {
+  const res = await axios.get(`${backendUrl}/api/friends/sentreq`, {
+    withCredentials: true,
+  });
+  const sentReqs = res.data;
+  return sentReqs;
+};
+
+export const getReceivedReqs = async () => {
+  const res = await axios.get(`${backendUrl}/api/friends/recivedreq`, {
+    withCredentials: true,
+  });
+  const receivedReqs = res.data;
+  return receivedReqs;
+};
