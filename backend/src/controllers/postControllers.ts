@@ -49,24 +49,45 @@ export const getAllPost = async (req: Request, res: Response) => {
   try {
     const allPost = await prisma.post.findMany({
       include: {
-        author: true,
-        comments: true,
-        likes: true,
+        author: {
+          select: {
+            id: true,
+            image: true,
+            name: true,
+          },
+        },
+        comments: {
+          select: {
+            createdAt: true,
+            id: true,
+
+            text: true,
+            user: { select: { id: true, image: true, name: true } },
+            userId: true,
+          },
+        },
+        likes: {
+          select: {
+            id: true,
+            userId: true,
+          },
+        },
       },
       orderBy: {
         createdAt: "desc",
       },
     });
+
     return res.status(200).json({
       data: allPost,
-      message: "got all post sucessfully",
+      message: "got all post successfully",
       success: true,
     });
   } catch (error: unknown) {
     const message =
       error instanceof Error ? error.message : "Something went wrong";
 
-    return res.status(401).json({
+    return res.status(500).json({
       data: null,
       message,
       success: false,
@@ -166,6 +187,7 @@ export const updatePost = async (req: Request, res: Response) => {
   });
 };
 
+// to delete post
 export const deletePost = async (req: Request, res: Response) => {
   if (!req.user) {
     return res
@@ -196,12 +218,23 @@ export const deletePost = async (req: Request, res: Response) => {
       success: false,
     });
   }
+
+  // need to delete likes and comments on this post
+  await prisma.like.deleteMany({
+    where: { postId: id },
+  });
+
+  await prisma.comment.deleteMany({
+    where: { postId: id },
+  });
+
   const deletePost = await prisma.post.delete({
     where: { id: id },
   });
+
   return res.status(200).json({
     data: deletePost,
-    messsage: "post deleted succesfully",
+    message: "post deleted successfully",
     success: true,
   });
 };

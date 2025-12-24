@@ -1,6 +1,14 @@
 {
-    "extends": "@tsconfig/node22/tsconfig.json",
-    "compilerOptions": { "strict": true },
+    "compilerOptions": {
+      "target": "ES2022",
+      "module": "CommonJS",
+      "lib": ["ES2022"],
+      "strict": true,
+      "esModuleInterop": true,
+      "skipLibCheck": true,
+      "outDir": "dist"
+    },
     "include": ["**/*.ts"],
-    "exclude": ["dist"]
-}
+    "exclude": ["node_modules", "dist"]
+  }
+  

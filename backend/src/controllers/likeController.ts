@@ -48,7 +48,7 @@ export const addLike = async (req: Request, res: Response) => {
 
   return res
     .status(200)
-    .json({  message: "post liked successfully", success: true });
+    .json({  message: "liked successfully", success: true });
 };
 
 export const removeLike = async (req: Request, res: Response) => {
@@ -82,7 +82,7 @@ export const removeLike = async (req: Request, res: Response) => {
   });
 
   return res.status(200).json({
-    message: "like removed successfully",
+    message: "unliked",
     success: true,
   });
 };

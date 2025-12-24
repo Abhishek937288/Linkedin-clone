@@ -18,7 +18,7 @@ export const addComment = async (req: Request, res: Response) => {
   const { id } = req.params;
   const result = commentSchema.safeParse(req.body);
   if (!result.success) {
-    return res.status(404).json({
+    return res.status(400).json({
       data: null,
       message: z.treeifyError(result.error),
       success: null,

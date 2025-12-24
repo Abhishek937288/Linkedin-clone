@@ -1,6 +1,7 @@
 import { assets } from "@/assets/assets";
 import Postcard from "@/components/custom/Postcard";
 import { useNavigate } from "react-router-dom";
+import type { Post } from "@/types/postType";
 
 import {
   Dialog,
@@ -9,6 +10,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogOverlay,
+  DialogDescription,
 } from "@/components/ui/dialog";
 import { userAuthstore } from "@/store/authStore";
 
@@ -24,20 +26,23 @@ import {
   SquarePlay,
 } from "lucide-react";
 import { useState } from "react";
-
-
+import useAllPosts from "@/hooks/useAllPosts";
+import AddPostForm from "@/components/custom/AddPostForm";
 
 const Homepage = () => {
   const { user } = userAuthstore();
   const navigate = useNavigate();
- 
+  const { postsData } = useAllPosts();
+  const [boxOpen, setBoxOpen] = useState(false);
+
   const [expanded, setExpanded] = useState(false);
+
   return (
     <div className="bg-gray-100 min-h-[calc(100vh-64px)] pb-5 ">
-      <div className="grid grid-cols-1 h-full sm:grid-cols-4 gap-5 mx-3 sm:mx-10 mb-5   ">
-        <div className="sm:col-span-1 h-160  sm:sticky  max-sm:mt-5  top-20 flex flex-col items-center px-5  ">
-          <div className="border border-gray-200 bg-white pb-2 w-55 rounded-2xl ">
-            <div className="relative">
+      <div className="grid grid-cols-1 h-full sm:grid-cols-4 gap-5 mx- sm:mx-10 mb-5   ">
+        <div className="sm:col-span-1 h-160 w-[95%] mt-2  sm:sticky  max-sm:mt-5  top-20 flex flex-col items-center px-  ">
+          <div className="border border-gray-200 bg-white pb-2  rounded-2xl ">
+            <div className="relative  ">
               <img
                 src={
                   user?.backgroundImg ||
@@ -51,8 +56,8 @@ const Homepage = () => {
                 className="w-15 h-15 rounded-full border-gray-50 absolute left-4 -bottom-10"
               />
             </div>
-            <div className="flex flex-col items-center gap-3 pt-5 px-2 ">
-              <h4 className="text-lg font-semibold">
+            <div className="flex flex-col items-center gap-3 pt-5 px-2  ">
+              <h4 className="text-lg font-semibold mt-3">
                 {user?.name
                   ? user.name.charAt(0).toUpperCase() + user.name.slice(1)
                   : ""}
@@ -73,14 +78,14 @@ const Homepage = () => {
               </button>
             </div>
           </div>
-          <div className="border flex flex-col px-5 pt-2 gap-1 border-gray-200 bg-white h-15 w-55 rounded-2xl hover:underline">
+          <div className="border flex flex-col px-5 pt-2 gap-1 border-gray-200  bg-white h-15 w-[95%] rounded-2xl hover:underline">
             <div className="flex  justify-between items-center">
               <p className="text-sm ">connections</p>{" "}
               <p className="text-xs text-blue-600 opacity-90">14</p>
             </div>
             <p className="text-xs opacity-80 ">Grow your network</p>
           </div>
-          <div className=" flex flex-col px-5 border border-gray-200 bg-white h-15 w-55 rounded-2xl pt-1 gap-1">
+          <div className=" flex flex-col px-5 border border-gray-200 bg-white h-15 w-[95%] rounded-2xl pt-1 gap-1">
             <p className="text-xs  opacity-80">
               Access Exlusive tools & Insights
             </p>
@@ -91,7 +96,7 @@ const Homepage = () => {
               </p>
             </div>
           </div>
-          <div className="border flex flex-col gap-2 border-gray-200 bg-white h-33 w-55 rounded-2xl px-5 pt-3">
+          <div className="border flex flex-col gap-2 border-gray-200 bg-white h-33 w-[95%] rounded-2xl px-5 pt-3">
             <div className="flex items-center gap-2 cursor-pointer">
               <BookMarked size={15} className="opacity-90" />{" "}
               <p className="text-sm opacity-90 hover:underline hover:opacity-100">
@@ -122,11 +127,11 @@ const Homepage = () => {
           <div className="border border-gray-300 shadow-lg w-full h-30 rounded-xl bg-white flex flex-col gap-5 ">
             <div className="flex gap-2 items-center px-2 pt-3 ">
               <img
-                src={assets.signin}
+                src={user?.image || assets.li}
                 className="h-10 w-10 rounded-full"
                 alt=""
               />
-              <Dialog>
+              <Dialog open={boxOpen} onOpenChange={setBoxOpen}>
                 <DialogTrigger asChild>
                   <button className="w-full h-12 rounded-2xl px-3 border border-gray-500 text-left hover:bg-gray-50">
                     Start a post
@@ -144,13 +149,15 @@ const Homepage = () => {
 
                 <DialogContent
                   className="
-          w-full h-[80vh] max-w-2xl
+          w-full max-w-2xl
           bg-white
           rounded-xl
           p-6
           shadow-xl
           top-[50%]
           left-1/2 -translate-x-1/2
+          max-h-[80vh]
+          overflow-y-auto
 
         "
                 >
@@ -158,7 +165,7 @@ const Homepage = () => {
                     <DialogTitle className="text-xl font-semibold">
                       <div className="flex gap-4 items-center">
                         <img
-                          src={assets.signin}
+                          src={user?.image || assets.li}
                           className="h-10 w-10 rounded-full"
                           alt=""
                         />
@@ -170,26 +177,11 @@ const Homepage = () => {
                         </h4>
                       </div>
                     </DialogTitle>
+                    <DialogDescription className="text-gray-700  flex flex-col justify-center font-md text-lg max-sm:text-sm">
+                      Add post *Are mandatory
+                    </DialogDescription>
                   </DialogHeader>
-                  <form action="" className=" flex flex-col gap-5 ">
-                    <textarea
-                      name=""
-                      className="border-none w-full h-60 outline-none"
-                      id=""
-                      placeholder="write something about your post"
-                    />
-                    <div className="flex items-center pb-5  gap-5 border-b border-gray-400">
-                      <Image color="#1d47c3" />
-                      <Image color="#1d47c3" />
-                      <Image color="#1d47c3" />
-                      <Image color="#1d47c3" />
-                    </div>
-                    <div className="flex flex-row-reverse">
-                      <button className="px-5 rounded-xl py-1 border border-gray-200 cursor-pointer bg-blue-500 text-white font-semibold hover:px-6">
-                        Post
-                      </button>
-                    </div>
-                  </form>
+                  <AddPostForm closeDilog={() => setBoxOpen(false)} />
                 </DialogContent>
               </Dialog>
             </div>
@@ -209,9 +201,9 @@ const Homepage = () => {
             </div>
           </div>
           <div className="flex flex-col gap-3">
-            <Postcard />
-            <Postcard />
-            <Postcard />
+            {postsData?.data.map((post: Post) => (
+              <Postcard key={post.id} post={post} />
+            ))}
           </div>
         </div>
         <div className="sm:col-span-1 flex flex-col gap-2   mt-10">
