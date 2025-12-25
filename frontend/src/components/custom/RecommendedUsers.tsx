@@ -1,11 +1,26 @@
 import { assets } from "@/assets/assets";
-
+import { sendFriendReq } from "@/lib/api";
 import type { UserFriendsProps } from "@/types/networkType";
-import { Plus } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-const UserFriends = ({ friendData }: UserFriendsProps) => {
-  const navigate = useNavigate();
+import { Plus } from "lucide-react";
+import toast from "react-hot-toast";
+
+const RecommendedUsers = ({ friendData }: UserFriendsProps) => {
+  const queryClient = useQueryClient();
+  const { isPending, mutate } = useMutation({
+    mutationFn: sendFriendReq,
+    onSuccess: (response) => {
+      queryClient.invalidateQueries({ queryKey: ["recommended-users"] });
+      queryClient.invalidateQueries({ queryKey: ["sent-requests"] });
+      toast.success(response.message);
+    },
+    onError: (error) => {
+      console.log("ON ERROR", error);
+      toast.error("Failed to create post");
+    },
+  });
+
   return (
     <div className="border border-gray-200 bg-white pb-2  rounded-2xl w-full sm:w-45 ">
       <div className="relative  ">
@@ -33,16 +48,17 @@ const UserFriends = ({ friendData }: UserFriendsProps) => {
         </p>
 
         <button
+          disabled={isPending}
           className="px-3  rounded-lg text-white flex items-center gap-1 border border-dotted bg-blue-600 text-center cursor-pointer hover:bg-blue-700 text-sm hover:text-md "
           onClick={() => {
-            navigate("/message");
+            mutate(friendData.id);
           }}
         >
-          <Plus size={10} /> Message
+          <Plus size={10} /> Connect
         </button>
       </div>
     </div>
   );
 };
 
-export default UserFriends;
+export default RecommendedUsers;

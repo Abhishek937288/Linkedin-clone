@@ -5,14 +5,18 @@ import useSentReqs from "@/hooks/useGetSentReqs";
 import { userAuthstore } from "@/store/authStore";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { useState } from "react";
-import type { Friend } from "@/types/networkType";
+import type { Friend, ReceivedRequest, SentRequest } from "@/types/networkType";
+import useGetrecommendedUsers from "@/hooks/useGetRecommendedUsers";
+import RecommendedUsers from "@/components/custom/RecommendedUsers";
+import RequestSent from "@/components/custom/RequestSent";
+import useRecievedReqs from "@/hooks/useReceivedReqeust";
+import RequestRecieved from "@/components/custom/RequestRecieved";
 const Networkpage = () => {
   const { user } = userAuthstore();
   const { sentRequests } = useSentReqs();
   const { userFriends } = useUserFriends();
-  if (userFriends) {
-    console.log("userFriends:", userFriends);
-  }
+  const { recommendedUsers } = useGetrecommendedUsers();
+  const { receivedReqs } = useRecievedReqs();
 
   const [expanded, setExpanded] = useState(false);
   return (
@@ -154,7 +158,7 @@ const Networkpage = () => {
             </div>
           </div>
         </div>
-        <div className="col-span-4  sm:px-3">
+        <div className="col-span-4 flex flex-col gap-2  sm:px-3">
           <div className="">
             <h4 className="font-semibold text-lg mb-3">Friends</h4>
             <div className="flex flex-row flex-wrap gap-2">
@@ -163,9 +167,50 @@ const Networkpage = () => {
               })}
             </div>
           </div>
-          <div className="">recommendedusers</div>
-          <div className="">sentReqeuests</div>
-          <div className="">recieved requests</div>
+          <div className="">
+            <div className="">
+              <h4 className="font-semibold text-lg mb-3">Recommended users</h4>
+              <div className="flex flex-row flex-wrap gap-2">
+                {recommendedUsers?.map((friend: Friend) => {
+                  return (
+                    <RecommendedUsers key={friend.id} friendData={friend} />
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+          <div className="">
+            <div className="">
+              <h4 className="font-semibold text-lg mb-3">Sent Requests</h4>
+              <div className="flex flex-row flex-wrap gap-2">
+                {sentRequests?.length < 0 && (
+                  <div>
+                    <h4 className=" text-sm opacity-80 font-semibold text-center">
+                      No Requset sent till now...{" "}
+                    </h4>
+                  </div>
+                )}
+                {sentRequests?.map((friend: SentRequest) => {
+                  return <RequestSent key={friend.id} friendData={friend} />;
+                })}
+              </div>
+            </div>
+          </div>
+          <div className="">
+            <h4 className="font-semibold text-lg mb-3"> Requests recieved</h4>
+            <div className="flex flex-row flex-wrap gap-2">
+              {receivedReqs?.length === 0 && (
+                <div>
+                  <h4 className="text-sm opacity-80 font-semibold text-center">
+                    No Request received till now...
+                  </h4>
+                </div>
+              )}
+              {receivedReqs?.map((friend: ReceivedRequest) => {
+                return <RequestRecieved key={friend.id} friendData={friend} />;
+              })}
+            </div>
+          </div>
         </div>
       </div>
     </div>

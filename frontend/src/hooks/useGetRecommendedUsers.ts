@@ -3,7 +3,7 @@ import { getRecommendedUsers } from "@/lib/api";
 
 const useGetrecommendedUsers = () => {
   const {
-    data: recommendedUsers,
+    data: data,
     isPending: gettingRecommendeUsers,
     error: recommendedUserError,
   } = useQuery({
@@ -11,7 +11,7 @@ const useGetrecommendedUsers = () => {
     queryFn: getRecommendedUsers,
   });
 
-  return { recommendedUsers, gettingRecommendeUsers, recommendedUserError };
+  return { recommendedUsers : data?.data, gettingRecommendeUsers, recommendedUserError };
 };
 
 export default useGetrecommendedUsers;

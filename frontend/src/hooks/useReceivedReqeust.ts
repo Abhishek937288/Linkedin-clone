@@ -3,14 +3,14 @@ import { getReceivedReqs } from "@/lib/api";
 
 const useRecievedReqs = () => {
   const {
-    data: receivedReqs,
+    data: data,
     isPending: fetchingReceivedReqs,
     error: receivedReqError,
   } = useQuery({
     queryKey: ["received-requests"],
     queryFn: getReceivedReqs,
   });
-  return { receivedReqs, fetchingReceivedReqs, receivedReqError };
+  return { receivedReqs: data?.data, fetchingReceivedReqs, receivedReqError };
 };
 
 export default useRecievedReqs;

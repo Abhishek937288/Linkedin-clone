@@ -132,3 +132,28 @@ export const getReceivedReqs = async () => {
   const receivedReqs = res.data;
   return receivedReqs;
 };
+
+export const sendFriendReq = async (id: string) => {
+  const res = await axios.post(
+    `${backendUrl}/api/friends/sendreq/${id}`,
+    {},
+    {
+      withCredentials: true,
+    }
+  );
+  const sendReqs = res.data;
+  return sendReqs;
+};
+
+export const acceptReqs = async (id: string) => {
+  const res = await axios.put(
+    `${backendUrl}/api/friends/acceptreq/${id}`,
+    {},
+    {
+      withCredentials: true,
+    }
+  );
+
+  const acceptReq = res.data;
+  return acceptReq;
+};
