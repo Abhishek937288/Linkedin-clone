@@ -62,8 +62,10 @@ export const getFriends = async (req: Request, res: Response) => {
 
   const friends = await prisma.user.findMany({
     select: {
+      backgroundImg: true,
       createdAt: true,
       email: true,
+      headline: true,
       id: true,
       image: true,
       name: true,
