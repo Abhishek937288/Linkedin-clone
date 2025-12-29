@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import {z} from "zod"
+import { z } from "zod";
 
 import { Prisma, PrismaClient } from "../../generated/prisma/index.js";
 import { userSchema } from "../validations/userValidation.js";
@@ -9,6 +9,7 @@ const prisma = new PrismaClient();
 export const getUserData = async (req: Request, res: Response) => {
   if (!req.user) return res.status(401).json({ message: "Unauthorized" });
   const user = await prisma.user.findUnique({
+    include: { receivedRequests: true, sentRequests: true },
     where: { id: req.user.id },
   });
   if (!user) {
@@ -59,7 +60,7 @@ export const updateUser = async (req: Request, res: Response) => {
   if (company !== undefined) data.company = company;
   if (designation !== undefined) data.designation = designation;
   if (experience !== undefined) data.experience = experience;
-  if(headline !== undefined)data.headline = headline;
+  if (headline !== undefined) data.headline = headline;
   if (image !== undefined) data.image = image;
   if (location !== undefined) data.location = location;
   data.name = name;
@@ -75,5 +76,78 @@ export const updateUser = async (req: Request, res: Response) => {
     where: { id },
   });
 
-  return res.status(200).json({ data:updatedUser,message:"user Updated succesfully", success: true });
+  return res.status(200).json({
+    data: updatedUser,
+    message: "user Updated succesfully",
+    success: true,
+  });
+};
+
+export const getProfileData = async (req: Request, res: Response) => {
+  const { id } = req.params;
+
+  if (!id) {
+    return res.status(400).json({
+      data: null,
+      message: "id not found",
+      success: false,
+    });
+  }
+
+  const profileData = await prisma.user.findUnique({
+    include: {
+      posts: {
+        include: {
+          author: {
+            select: {
+              id: true,
+              image: true,
+              name: true,
+            },
+          },
+          comments: {
+            select: {
+              createdAt: true,
+              id: true,
+              text: true,
+              user: {
+                select: {
+                  id: true,
+                  image: true,
+                  name: true,
+                },
+              },
+              userId: true,
+            },
+          },
+          likes: {
+            select: {
+              id: true,
+              userId: true,
+            },
+          },
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+      },
+      receivedRequests: true,
+      sentRequests: true,
+    },
+    where: { id },
+  });
+
+  if (!profileData) {
+    return res.status(400).json({
+      data: null,
+      message: "user not found",
+      success: false,
+    });
+  }
+
+  return res.status(200).json({
+    data: profileData,
+    message: "profile data found successfully",
+    success: true,
+  });
 };

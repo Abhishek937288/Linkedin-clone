@@ -73,3 +73,12 @@ export interface ReceivedRequest {
 export interface RecievedRequestProp {
   friendData: ReceivedRequest;
 }
+
+export interface SentReqData{
+  id: string;
+  senderId: string;
+  recipientId: string;
+  status: "pending" | "accepted" | "rejected";
+  createdAt: string;
+  updatedAt: string;
+}

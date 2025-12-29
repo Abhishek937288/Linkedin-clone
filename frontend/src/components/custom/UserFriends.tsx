@@ -23,7 +23,12 @@ const UserFriends = ({ friendData }: UserFriendsProps) => {
         />
       </div>
       <div className="flex flex-col items-center gap-3 pt-5 px-2  ">
-        <h4 className="text-lg font-semibold mt-3">
+        <h4
+          className="text-lg font-semibold mt-3 hover:underline  cursor-pointer"
+          onClick={() => {
+            navigate(`/checkprofile/${friendData.id}`);
+          }}
+        >
           {friendData?.name
             ? friendData.name.charAt(0).toUpperCase() + friendData.name.slice(1)
             : ""}

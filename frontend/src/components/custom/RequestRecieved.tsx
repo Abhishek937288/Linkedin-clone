@@ -4,8 +4,10 @@ import { Plus } from "lucide-react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { acceptReqs } from "@/lib/api";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const RequestRecieved = ({ friendData }: RecievedRequestProp) => {
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { isPending, mutate } = useMutation({
     mutationFn: acceptReqs,
@@ -38,7 +40,9 @@ const RequestRecieved = ({ friendData }: RecievedRequestProp) => {
         />
       </div>
       <div className="flex flex-col items-center gap-2 pt-2 px-2  ">
-        <h4 className="text-sm font-semibold mt-3">
+        <h4 className="text-sm font-semibold mt-3 cursor-pointer" onClick={() => {
+            navigate(`/checkprofile/${friendData?.sender?.id}`);
+          }}>
           {friendData?.sender?.name
             ? friendData?.sender?.name.charAt(0).toUpperCase() +
               friendData?.sender?.name.slice(1)
