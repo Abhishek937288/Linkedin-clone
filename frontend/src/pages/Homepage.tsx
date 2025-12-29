@@ -37,7 +37,7 @@ const Homepage = () => {
   const [boxOpen, setBoxOpen] = useState(false);
 
   const [expanded, setExpanded] = useState(false);
-
+  
   return (
     <div className="bg-gray-100 min-h-[calc(100vh-64px)] pb-5 ">
       <div className="grid grid-cols-1 h-full sm:grid-cols-4 gap-5 mx- sm:mx-10 mb-5   ">

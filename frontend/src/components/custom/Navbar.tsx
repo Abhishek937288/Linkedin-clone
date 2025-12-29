@@ -76,8 +76,10 @@ const Navbar = () => {
             </Link>
 
             <div className="flex flex-col items-center">
+             
               <Bell className="w-6 h-6 text-gray-700" />
               <p className="text-xs md:text-sm text-gray-700">Notifications</p>
+             
             </div>
             <div className="flex flex-col  items-center">
               <img

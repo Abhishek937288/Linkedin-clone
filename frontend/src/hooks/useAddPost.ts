@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 
 const useAddPost = () => {
   const queryClient = useQueryClient();
-  //   const navigate = useNavigate();
+  
 
   const post = useMutation({
     mutationFn: addPost,

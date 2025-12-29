@@ -26,7 +26,9 @@ const RequestSent = ({ friendData }: SentRequestProp) => {
         />
       </div>
       <div className="flex flex-col items-center gap-2 pt-2 px-2  ">
-        <h4 className="text-sm font-semibold mt-3">
+        <h4 className="text-sm font-semibold mt-3 cursor-pointer" onClick={() => {
+            navigate(`/checkprofile/${friendData?.recipient?.id}`);
+          }}>
           {friendData?.recipient?.name
             ? friendData?.recipient?.name.charAt(0).toUpperCase() +
               friendData?.recipient?.name.slice(1)

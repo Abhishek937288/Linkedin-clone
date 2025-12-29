@@ -157,3 +157,11 @@ export const acceptReqs = async (id: string) => {
   const acceptReq = res.data;
   return acceptReq;
 };
+
+export const getProfileData = async (id: string) => {
+  const res = await axios.get(`${backendUrl}/api/user/profile/${id}`, {
+    withCredentials: true,
+  });
+  const profileData = res.data;
+  return profileData;
+};

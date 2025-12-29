@@ -13,8 +13,8 @@ export interface Comment {
 }
 
 export interface Like {
-  id :string;
-  userId : string;
+  id: string;
+  userId: string;
 }
 
 export interface Post {
@@ -28,20 +28,21 @@ export interface Post {
   authorId: string;
   author: User;
   comments: Comment[];
-  likes: Like[]; 
+  likes: Like[];
 }
 
-export interface  AddPostFormProps {
-  closeDilog: ()=> void;
+export interface AddPostFormProps {
+  closeDilog: () => void;
 }
 
 export interface createPost {
-  title:string,
-  content?:string,
-  image : string | string[],
-  video?:string;
+  title: string;
+  content?: string;
+  image: string | string[];
+  video?: string;
 }
 
-export interface deletePostId{
-  id :string
+export interface deletePostId {
+  id: string;
 }
+

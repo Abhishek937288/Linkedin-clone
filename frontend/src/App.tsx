@@ -12,6 +12,7 @@ import Messagepage from "./pages/Messagepage";
 import Networkpage from "./pages/Networkpage";
 
 import Profilepage from "./pages/Profilepage";
+import CheckProfilePage from "./pages/CheckProfilePage";
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
@@ -44,6 +45,7 @@ function App() {
           <Route path="/message" element={<Messagepage />} />
           <Route path="/network" element={<Networkpage />} />
           <Route path="/profile" element={<Profilepage />} />
+          <Route path="/checkprofile/:id" element={<CheckProfilePage/>}/>
         </Route>
         <Route element={<Authlayout />}>
           <Route path="/signup" element={<Signuppage />} />

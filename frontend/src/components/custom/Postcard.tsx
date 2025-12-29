@@ -32,6 +32,7 @@ const Postcard: React.FC<PostCardProps> = ({ post }) => {
     mutationFn: isLiked ? removeLike : addLike,
     onSuccess: (response) => {
       queryClient.invalidateQueries({ queryKey: ["posts"] });
+      queryClient.invalidateQueries({ queryKey: ["profileData"] });
       toast.success(response.message);
       setComment("");
     },
@@ -48,6 +49,7 @@ const Postcard: React.FC<PostCardProps> = ({ post }) => {
     mutationFn: addComment,
     onSuccess: (response) => {
       queryClient.invalidateQueries({ queryKey: ["posts"] });
+      queryClient.invalidateQueries({ queryKey: ["profileData"] });
       toast.success(response.message);
       setComment("");
     },
@@ -60,6 +62,7 @@ const Postcard: React.FC<PostCardProps> = ({ post }) => {
     mutationFn: deleteComment,
     onSuccess: (response) => {
       queryClient.invalidateQueries({ queryKey: ["posts"] });
+      queryClient.invalidateQueries({ queryKey: ["profileData"] });
       toast.success(response.message);
     },
     onError: (error) => {

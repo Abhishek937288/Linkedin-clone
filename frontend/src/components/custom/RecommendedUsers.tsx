@@ -1,25 +1,15 @@
 import { assets } from "@/assets/assets";
-import { sendFriendReq } from "@/lib/api";
+import useSendReq from "@/hooks/useSendReq";
+
 import type { UserFriendsProps } from "@/types/networkType";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { Plus } from "lucide-react";
-import toast from "react-hot-toast";
+
+import { useNavigate } from "react-router-dom";
 
 const RecommendedUsers = ({ friendData }: UserFriendsProps) => {
-  const queryClient = useQueryClient();
-  const { isPending, mutate } = useMutation({
-    mutationFn: sendFriendReq,
-    onSuccess: (response) => {
-      queryClient.invalidateQueries({ queryKey: ["recommended-users"] });
-      queryClient.invalidateQueries({ queryKey: ["sent-requests"] });
-      toast.success(response.message);
-    },
-    onError: (error) => {
-      console.log("ON ERROR", error);
-      toast.error("Failed to create post");
-    },
-  });
+  const navigate = useNavigate();
+  const { sendReq, reqPending } = useSendReq();
 
   return (
     <div className="border border-gray-200 bg-white pb-2  rounded-2xl w-full sm:w-45 ">
@@ -38,7 +28,12 @@ const RecommendedUsers = ({ friendData }: UserFriendsProps) => {
         />
       </div>
       <div className="flex flex-col items-center gap-3 pt-5 px-2  ">
-        <h4 className="text-lg font-semibold mt-3">
+        <h4
+          className="text-lg font-semibold mt-3 cursor-pointer"
+          onClick={() => {
+            navigate(`/checkprofile/${friendData.id}`);
+          }}
+        >
           {friendData?.name
             ? friendData.name.charAt(0).toUpperCase() + friendData.name.slice(1)
             : ""}
@@ -48,10 +43,10 @@ const RecommendedUsers = ({ friendData }: UserFriendsProps) => {
         </p>
 
         <button
-          disabled={isPending}
+          disabled={reqPending}
           className="px-3  rounded-lg text-white flex items-center gap-1 border border-dotted bg-blue-600 text-center cursor-pointer hover:bg-blue-700 text-sm hover:text-md "
           onClick={() => {
-            mutate(friendData.id);
+            sendReq(friendData.id);
           }}
         >
           <Plus size={10} /> Connect
