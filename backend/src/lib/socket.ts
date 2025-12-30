@@ -3,9 +3,13 @@ import http from "http"; // to create http server
 import { Socket } from "socket.io";
 import { Server } from "socket.io"; // to create the socket server
 
+import { PrismaClient } from "../../generated/prisma/index.js";
+
+const prisma = new PrismaClient();
+
 import {
-  getPendingMsg,
-  markDelivered,
+  // getPendingMsg,
+  // markDelivered,
   saveMsg,
 } from "../controllers/messageControlller.js";
 import { socketAuthMiddleware } from "../middlewares/socketAuthMiddleware.js";
@@ -47,12 +51,20 @@ io.on("connection", async (socket: AuthenticatedSocket) => {
 
   addSocket(userId, socket.id);
 
-  const pedingMsgs = await getPendingMsg(userId); // get all msgs those are pendings
+  // const pedingMsgs = await getPendingMsg(userId); // get all msgs those are pendings
 
-  for (const msg of pedingMsgs) {
-    io.to(socket.id).emit("reciveMessage", msg); // will send all pending msgs for users and make deliverd true
-    await markDelivered(msg.id);
-  }
+  // for (const msg of pedingMsgs) {
+  //   io.to(socket.id).emit("reciveMessage", msg); // will send all pending msgs for users and make deliverd true
+  //   await markDelivered(msg.id);
+  // }
+
+  await prisma.message.updateMany({
+    data: { delivered: true }, // when user comes online we mark all messages delivered
+    where: {
+      delivered: false,
+      receiverId: userId,
+    },
+  });
 
   // send message part
   socket.on(

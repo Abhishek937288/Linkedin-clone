@@ -30,7 +30,6 @@ const CheckProfilePage = () => {
     profileInfo?.receivedRequests?.some(
       (req: SentReqData) => req.senderId === user?.id && req.recipientId === id
     ) ?? false;
-    
 
   const requestRecieved =
     profileInfo?.sentRequests?.some(

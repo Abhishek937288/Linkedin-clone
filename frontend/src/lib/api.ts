@@ -165,3 +165,12 @@ export const getProfileData = async (id: string) => {
   const profileData = res.data;
   return profileData;
 };
+
+
+export const getMsgs = async (id: string) => {
+  const res = await axios.get(`${backendUrl}/api/messages/${id}`, {
+    withCredentials: true,
+  });
+  const messages = res.data;
+  return messages;
+};
