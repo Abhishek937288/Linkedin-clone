@@ -37,11 +37,11 @@ const Homepage = () => {
   const [boxOpen, setBoxOpen] = useState(false);
 
   const [expanded, setExpanded] = useState(false);
-  
+
   return (
     <div className="bg-gray-100 min-h-[calc(100vh-64px)] pb-5 ">
       <div className="grid grid-cols-1 h-full sm:grid-cols-4 gap-5 mx- sm:mx-10 mb-5   ">
-        <div className="sm:col-span-1 h-160 w-[95%] mt-2  sm:sticky  max-sm:mt-5  top-20 flex flex-col items-center px-  ">
+        <div className="max-sm:hidden sm:col-span-1 h-160 w-[95%] mt-2  sm:sticky  max-sm:mt-5  top-20 flex flex-col items-center px-  ">
           <div className="border border-gray-200 bg-white pb-2  rounded-2xl ">
             <div className="relative  ">
               <img
@@ -82,7 +82,9 @@ const Homepage = () => {
           <div className="border flex flex-col px-5 pt-2 gap-1 border-gray-200  bg-white h-15 w-[95%] rounded-2xl hover:underline">
             <div className="flex  justify-between items-center">
               <p className="text-sm ">connections</p>{" "}
-              <p className="text-xs text-blue-600 opacity-90">{user?.friends?.length}</p>
+              <p className="text-xs text-blue-600 opacity-90">
+                {user?.friends?.length}
+              </p>
             </div>
             <p className="text-xs opacity-80 ">Grow your network</p>
           </div>

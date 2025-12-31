@@ -8,9 +8,10 @@ import type { SentReqData } from "@/types/networkType";
 import type { Post } from "@/types/postType";
 import { useQuery } from "@tanstack/react-query";
 import { MapPin } from "lucide-react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const CheckProfilePage = () => {
+  const navigate = useNavigate()
   const params = useParams<{ id: string }>();
   const id = params.id!;
 
@@ -37,7 +38,7 @@ const CheckProfilePage = () => {
     ) ?? false; // here data should be changed bt it data type is same so used
 
   return (
-    <div className="bg-gray-100 min-h-[calc(100vh-64px)] pb-5">
+    <div className="bg-gray-100 min-h-[calc(100vh-64px)]  pb-5">
       <div className="grid grid-cols-1 h-full sm:grid-cols-5 gap-5 mx-2 sm:mx-10 mb-5 ">
         <div className="col-span-2  ">
           <div className="mt-5 flex flex-col   gap-2 mb-5 sm:sticky top-10 ">
@@ -77,7 +78,9 @@ const CheckProfilePage = () => {
                 </p>
                 <div className="flex flex-col items-center  sm:flex-row gap-2">
                   {isFriend && (
-                    <button className="sm:px-3 py-1 max-sm:w-20  cursor-pointer rounded-2xl bg-blue-600 text-white max-sm:text-sm ">
+                    <button className="sm:px-3 py-1 max-sm:w-20  cursor-pointer rounded-2xl bg-blue-600 text-white max-sm:text-sm "onClick={() => {
+            navigate(`/message/${id}`);
+          }}>
                       message
                     </button>
                   )}
