@@ -58,7 +58,7 @@ export const getFriends = async (req: Request, res: Response) => {
     where: { id: userId },
   });
 
-  const friendIds = me?.friends ?? [];
+  const friendIds = (me?.friends ?? []).filter((id) => id !== userId);
 
   const friends = await prisma.user.findMany({
     select: {

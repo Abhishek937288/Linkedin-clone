@@ -148,7 +148,7 @@ const AddPostForm = ({ closeDilog }: AddPostFormProps) => {
           >
             {uploading || addingPost ? "Uploading..." : "Post"}
           </button>
-          <button onClick={() => closeDilog()}>close form</button>
+          
         </div>
       </form>
     </div>

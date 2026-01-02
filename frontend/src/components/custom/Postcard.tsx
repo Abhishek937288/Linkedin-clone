@@ -114,7 +114,7 @@ const Postcard: React.FC<PostCardProps> = ({ post }) => {
                 {item.endsWith(".mp4") ? (
                   <video src={item} controls className="w-full rounded-lg" />
                 ) : (
-                  <img src={item} className="w-full rounded-lg object-cover" />
+                  <img src={item} className="w-full  rounded-lg object-cover" />
                 )}
               </div>
             ))}

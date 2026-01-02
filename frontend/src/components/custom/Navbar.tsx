@@ -5,7 +5,6 @@ import {
   House,
   Users,
   BriefcaseBusiness,
-  MessageCircleMore,
   Bell,
   Search,
   ArrowDown,
@@ -22,6 +21,7 @@ import {
   BookCheck,
   Menu,
   ChevronDown,
+  UserPen,
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -70,16 +70,9 @@ const Navbar = () => {
               <p className="text-xs md:text-sm text-gray-700">Jobs</p>
             </div>
 
-            <Link to={"/message"} className="flex flex-col items-center">
-              <MessageCircleMore className="w-6 h-6 text-gray-700" />
-              <p className="text-xs md:text-sm text-gray-700">Messaging</p>
-            </Link>
-
             <div className="flex flex-col items-center">
-             
               <Bell className="w-6 h-6 text-gray-700" />
               <p className="text-xs md:text-sm text-gray-700">Notifications</p>
-             
             </div>
             <div className="flex flex-col  items-center">
               <img
@@ -134,7 +127,7 @@ const Navbar = () => {
                         {" "}
                         <button
                           className="px-18 py-1 rounded-xl border border-blue-500 text-sm cursor-pointer hover:bg-blue-100 hover:border-blue-800  hover:border-2 text-blue-500 mb-3"
-                          onClick={()=>navigate("/profile")}
+                          onClick={() => navigate("/profile")}
                         >
                           View Profile
                         </button>
@@ -434,15 +427,14 @@ const Navbar = () => {
                   <Users className="w-6 h-6 text-gray-700" />
                   <p className="text-lg md:text-sm text-gray-700">My network</p>
                 </Link>
+                 <Link to={"/profile"} className="flex gap-5 items-center">
+                  <UserPen  className="w-6 h-6 text-gray-700" />
+                  <p className="text-lg md:text-sm text-gray-700">view profile</p>
+                </Link>
                 <div className="flex gap-5 items-center">
                   <BriefcaseBusiness className="w-6 h-6 text-gray-700" />
                   <p className="text-lg md:text-sm text-gray-700">Jobs</p>
                 </div>
-
-                <Link to={"/message"} className="flex gap-5 items-center">
-                  <MessageCircleMore className="w-6 h-6 text-gray-700" />
-                  <p className="text-lg  text-gray-700">Messaging</p>
-                </Link>
 
                 <div className="flex gap-5 items-center">
                   <Bell className="w-6 h-6 text-gray-700" />

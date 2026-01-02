@@ -40,7 +40,7 @@ const UserFriends = ({ friendData }: UserFriendsProps) => {
         <button
           className="px-3  rounded-lg text-white flex items-center gap-1 border border-dotted bg-blue-600 text-center cursor-pointer hover:bg-blue-700 text-sm hover:text-md "
           onClick={() => {
-            navigate("/message");
+            navigate(`/message/${friendData.id}`);
           }}
         >
           <Plus size={10} /> Message

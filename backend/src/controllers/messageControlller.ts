@@ -15,7 +15,7 @@ export const getMessagesBetween = async (req: Request, res: Response) => {
   const message = await prisma.message.findMany({
     orderBy: { createdAt: "asc" },
     where: {
-      delivered: true,
+      // delivered: true, 
       OR: [
         { receiverId: userB, senderId: userA },
         { receiverId: userA, senderId: userB },
