@@ -1,6 +1,11 @@
 import axios from "axios";
 import { authClient } from "../lib/authClient";
-const backendUrl = import.meta.env.VITE_BACKEND_URL;
+// const backendUrl = import.meta.env.VITE_BACKEND_URL
+const backendUrl =
+  import.meta.env.MODE === "development"
+    ? import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"
+    : "";
+
 import type { createPost } from "@/types/postType";
 
 interface SignupForm {
@@ -165,7 +170,6 @@ export const getProfileData = async (id: string) => {
   const profileData = res.data;
   return profileData;
 };
-
 
 export const getMsgs = async (id: string) => {
   const res = await axios.get(`${backendUrl}/api/messages/${id}`, {
