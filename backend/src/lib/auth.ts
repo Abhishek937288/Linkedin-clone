@@ -1,12 +1,13 @@
+import type { PrismaClient } from "@prisma/client";
+
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 
-import { PrismaClient } from "../../generated/prisma/index.js";
-
-const prisma = new PrismaClient();
+import { prisma } from "./prisma.js";
 
 export const auth = betterAuth({
-  database: prismaAdapter(prisma, {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+  database: prismaAdapter(prisma as PrismaClient, {
     provider: "mongodb",
   }),
 
@@ -14,7 +15,6 @@ export const auth = betterAuth({
     allowDomains: ["*"],
     enabled: true,
   },
-
 
   trustedOrigins: [process.env.FRONTEND_URL ?? ""],
 });

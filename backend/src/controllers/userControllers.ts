@@ -1,10 +1,14 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+
+
 import { Request, Response } from "express";
 import { z } from "zod";
 
-import { Prisma, PrismaClient } from "../../generated/prisma/index.js";
+import { Prisma } from "../../generated/prisma/index.js";
+import { prisma } from "../lib/prisma.js";
 import { userSchema } from "../validations/userValidation.js";
-
-const prisma = new PrismaClient();
 
 export const getUserData = async (req: Request, res: Response) => {
   if (!req.user) return res.status(401).json({ message: "Unauthorized" });

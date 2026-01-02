@@ -1,12 +1,13 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+
 import { Request, Response } from "express";
 import { z } from "zod";
 
-import { PrismaClient } from "../../generated/prisma/index.js";
+import { prisma } from "../lib/prisma.js";
 import { commentSchema } from "../validations/commentValidation.js";
 
-const prisma = new PrismaClient();
-
-// add a comment to post
 
 export const addComment = async (req: Request, res: Response) => {
   if (!req.user?.id || !req.user.name) {

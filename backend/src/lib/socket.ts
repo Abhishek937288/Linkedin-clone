@@ -1,12 +1,15 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+
 import http from "http";
 import { Server, Socket } from "socket.io";
 
-import { PrismaClient } from "../../generated/prisma/index.js";
 import { saveMsg } from "../controllers/messageControlller.js";
+import { prisma } from "../lib/prisma.js";
 import { socketAuthMiddleware } from "../middlewares/socketAuthMiddleware.js";
 import { addSocket, onlineUsers, removeSocket } from "./onlineUsers.js";
 
-const prisma = new PrismaClient();
 const frontendUrl = process.env.FRONTEND_URL;
 
 interface AuthenticatedSocket extends Socket {

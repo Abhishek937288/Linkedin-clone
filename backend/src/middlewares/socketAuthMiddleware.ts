@@ -1,8 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+
 import { Socket } from "socket.io";
 
-import { PrismaClient } from "../../generated/prisma/index.js";
-
-const prisma = new PrismaClient();
+import { prisma } from "../lib/prisma.js";
 
 interface AuthenticatedSocket extends Socket {
   userId?: string;

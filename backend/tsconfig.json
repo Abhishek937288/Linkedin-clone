@@ -12,5 +12,5 @@
   },
 
   "include": ["src/**/*.ts"],
-  "exclude": ["node_modules", "dist", "generated", "prisma.config.ts"]
+  "exclude": ["node_modules", "dist", "generated", "src/prisma.config.ts"]
 }
