@@ -4,15 +4,14 @@
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "outDir": "dist",
-    "rootDir": ".",
+    "rootDir": "src",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "skipLibCheck": true,
-    "lib": ["ES2020", "DOM"],
+    "lib": ["ES2020"],
     "types": ["node"]
   },
-
   "include": ["src/**/*.ts"],
-  "exclude": ["node_modules", "dist", "generated", "src/prisma.config.ts"]
+  "exclude": ["node_modules", "dist", "generated"]
 }
