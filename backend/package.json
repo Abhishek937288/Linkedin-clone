@@ -6,7 +6,7 @@
     "dev": "tsx --watch src/index.ts",
     "start": "node dist/index.js",
     "db:push": "prisma db push",
-    "build": "tsc",
+    "build": "pnpm install && prisma generate && tsc",
     "type-check": "tsc --noEmit",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
