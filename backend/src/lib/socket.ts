@@ -1,14 +1,13 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
 import http from "http";
 import { Server, Socket } from "socket.io";
 
+import { prisma } from "../../lib/prisma.js";
 import { saveMsg } from "../controllers/messageControlller.js";
-import { prisma } from "../lib/prisma.js";
 import { socketAuthMiddleware } from "../middlewares/socketAuthMiddleware.js";
 import { addSocket, onlineUsers, removeSocket } from "./onlineUsers.js";
+
+
 
 const frontendUrl = process.env.FRONTEND_URL;
 

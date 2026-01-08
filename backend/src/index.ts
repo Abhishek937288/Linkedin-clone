@@ -5,6 +5,7 @@ import express from "express";
 import http from "http";
 import path from "node:path";
 
+import { connectDB } from "../lib/prisma.js";
 import { auth } from "./lib/auth.js";
 import { setupSocket } from "./lib/socket.js";
 import commentRoutes from "./routes/commentRoutes.js";
@@ -32,7 +33,7 @@ app.use("/api/post/like", likeRoutes);
 app.use("/api/friends", friendRequestRoutes);
 app.use("/api/messages", messageRoutes);
 app.use("/api/user", userRoutes);
- 
+
 if (process.env.NODE_ENV === "production") {
   const frontendPath = path.resolve(__dirname, "../frontend/dist");
   app.use(express.static(frontendPath));
@@ -46,6 +47,11 @@ const server = http.createServer(app);
 
 setupSocket(server);
 
-server.listen(port, () => {
-  console.log(`Server running on port ${port.toString()}`);
-});
+async function bootstrap() {
+  await connectDB();
+  server.listen(port, () => {
+    console.log(`Server running on port ${port.toString()}`);
+  });
+}
+
+bootstrap().catch(console.error);
