@@ -1,10 +1,11 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-
+/* eslint-disable 
+  @typescript-eslint/no-unsafe-call,
+  @typescript-eslint/no-unsafe-member-access,
+  @typescript-eslint/no-unsafe-assignment
+*/
 import { Request, Response } from "express";
 
-import { prisma } from "../lib/prisma.js";
+import { prisma } from "../../lib/prisma.js";
 
 
 // add like to post
@@ -42,16 +43,14 @@ export const addLike = async (req: Request, res: Response) => {
     });
   }
 
-   await prisma.like.create({
+  await prisma.like.create({
     data: {
       postId,
       userId: req.user.id,
     },
   });
 
-  return res
-    .status(200)
-    .json({  message: "liked successfully", success: true });
+  return res.status(200).json({ message: "liked successfully", success: true });
 };
 
 export const removeLike = async (req: Request, res: Response) => {

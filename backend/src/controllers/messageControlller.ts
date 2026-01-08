@@ -1,10 +1,14 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable 
+  @typescript-eslint/no-unsafe-call,
+  @typescript-eslint/no-unsafe-member-access,
+  @typescript-eslint/no-unsafe-assignment
+*/
 
 import { Request, Response } from "express";
 
-import { prisma } from "../lib/prisma.js";
+import { prisma } from "../../lib/prisma.js";
+
+
 
 export const getMessagesBetween = async (req: Request, res: Response) => {
   if (!req.user?.id) {
@@ -17,7 +21,7 @@ export const getMessagesBetween = async (req: Request, res: Response) => {
   const message = await prisma.message.findMany({
     orderBy: { createdAt: "asc" },
     where: {
-      // delivered: true, 
+      // delivered: true,
       OR: [
         { receiverId: userB, senderId: userA },
         { receiverId: userA, senderId: userB },

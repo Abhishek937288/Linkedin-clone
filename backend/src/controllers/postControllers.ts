@@ -1,13 +1,12 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
 
 import { Request, Response } from "express";
 import { z } from "zod";
 
-import { prisma } from "../lib/prisma.js";
+import { prisma } from "../../lib/prisma.js";
 import { postSchema } from "../validations/postsValidation.js";
+
+
 
 
 
@@ -157,7 +156,7 @@ export const updatePost = async (req: Request, res: Response) => {
 
   // to check user author of the post
 
-  if (post.author.id !== req.user.id) {
+  if (post.authorId !== req.user.id) {
     return res.status(403).json({
       data: null,
       message: "user is not authorised to edit post",
@@ -216,7 +215,7 @@ export const deletePost = async (req: Request, res: Response) => {
       .json({ data: null, message: "post not found", success: false });
   }
 
-  if (post.author.id !== req.user.id) {
+  if (post.authorId !== req.user.id) {
     return res.status(403).json({
       data: null,
       message: "user is not authorised to delete post",

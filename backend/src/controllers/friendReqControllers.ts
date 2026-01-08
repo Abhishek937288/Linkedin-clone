@@ -1,10 +1,12 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable 
+  @typescript-eslint/no-unsafe-call,
+  @typescript-eslint/no-unsafe-member-access,
+  @typescript-eslint/no-unsafe-assignment
+*/
 
 import { Request, Response } from "express";
 
-import { prisma } from "../lib/prisma.js";
+import { prisma } from "../../lib/prisma.js";
 
 
 // get users recommended friends
@@ -26,8 +28,10 @@ export const getReccomendedUser = async (req: Request, res: Response) => {
 
   const friendIds = me?.friends ?? []; // to get the friends of user
 
-  const sentToIds = me?.sentRequests.map((r: { recipientId: string }) => r.recipientId) ?? []; // send Request ids
-  const receiverId = me?.receivedRequests.map((r:{senderId:string}) => r.senderId) ?? []; // received Request ids
+  const sentToIds =
+    me?.sentRequests.map((r: { recipientId: string }) => r.recipientId) ?? []; // send Request ids
+  const receiverId =
+    me?.receivedRequests.map((r: { senderId: string }) => r.senderId) ?? []; // received Request ids
 
   const excludedIds = [
     me?.id,
@@ -61,7 +65,7 @@ export const getFriends = async (req: Request, res: Response) => {
     where: { id: userId },
   });
 
-  const friendIds = (me?.friends ?? []).filter((id:string) => id !== userId);
+  const friendIds = (me?.friends ?? []).filter((id: string) => id !== userId);
 
   const friends = await prisma.user.findMany({
     select: {

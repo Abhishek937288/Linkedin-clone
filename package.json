@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-  "build": "npm install --prefix backend &&  npx prisma generate --schema=backend/prisma/schema.prisma && npm run build --prefix backend && npm install --prefix frontend && npm run build --prefix frontend",
-  "start": "npm run start --prefix backend"
-}
-,
+    "build": "pnpm -r run build",
+    "start": "pnpm --filter backend run start",
+    "dev": "pnpm --filter backend run dev"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Abhishek937288/Linkedin-clone.git"
@@ -18,5 +18,8 @@
     "url": "https://github.com/Abhishek937288/Linkedin-clone/issues"
   },
   "homepage": "https://github.com/Abhishek937288/Linkedin-clone#readme",
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "@types/node": "^25.0.3"
+  }
 }

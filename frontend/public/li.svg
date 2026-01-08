@@ -1,0 +1,42 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 256 256"
+  width="256"
+  height="256"
+>
+  <!-- Background -->
+  <rect
+    x="0"
+    y="0"
+    width="256"
+    height="256"
+    rx="32"
+    fill="#0A66C2"
+  />
+
+  <!-- Dot of i -->
+  <circle cx="64" cy="72" r="20" fill="#000000" />
+
+  <!-- i stem -->
+  <rect x="44" y="112" width="40" height="100" fill="#000000" />
+
+  <!-- n -->
+  <path
+    d="
+      M110 112
+      h40
+      v20
+      c10 -14 28 -22 48 -22
+      34 0 58 24 58 62
+      v40
+      h-40
+      v-38
+      c0 -20 -10 -32 -28 -32
+      -18 0 -28 12 -28 32
+      v38
+      h-40
+      z
+    "
+    fill="#000000"
+  />
+</svg>

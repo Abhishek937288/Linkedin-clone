@@ -1,10 +1,10 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+
 
 import { Socket } from "socket.io";
 
-import { prisma } from "../lib/prisma.js";
+import { prisma } from "../../lib/prisma.js";
+
+
 
 interface AuthenticatedSocket extends Socket {
   userId?: string;
@@ -41,7 +41,7 @@ export const socketAuthMiddleware = async (
       return;
     }
 
-    socket.userId = session.user.id;
+    socket.userId = session.user.id
 
     next();
   } catch (err) {
