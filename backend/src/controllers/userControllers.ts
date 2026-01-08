@@ -1,12 +1,9 @@
-
 import { Request, Response } from "express";
 import { z } from "zod";
 
-import { Prisma } from "../../generated/prisma/client.js";
 import { prisma } from "../../lib/prisma.js";
 import { userSchema } from "../validations/userValidation.js";
-
-
+import { Prisma } from "@prisma/client";
 
 export const getUserData = async (req: Request, res: Response) => {
   if (!req.user) return res.status(401).json({ message: "Unauthorized" });

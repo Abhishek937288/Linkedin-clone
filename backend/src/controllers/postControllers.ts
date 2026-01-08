@@ -1,14 +1,8 @@
-
-
 import { Request, Response } from "express";
 import { z } from "zod";
 
 import { prisma } from "../../lib/prisma.js";
 import { postSchema } from "../validations/postsValidation.js";
-
-
-
-
 
 // to create post
 export const createPost = async (req: Request, res: Response) => {

@@ -1,9 +1,3 @@
-/* eslint-disable 
-  @typescript-eslint/no-unsafe-call,
-  @typescript-eslint/no-unsafe-member-access,
-  @typescript-eslint/no-unsafe-assignment
-*/
-
 import { Request, Response } from "express";
 import { z } from "zod";
 
@@ -29,7 +23,7 @@ export const addComment = async (req: Request, res: Response) => {
   }
   const { text } = result.data;
 
-   await prisma.comment.create({
+  await prisma.comment.create({
     data: {
       postId: id,
       text,
@@ -37,9 +31,7 @@ export const addComment = async (req: Request, res: Response) => {
     },
   });
 
-  return res
-    .status(200)
-    .json({ message: "comment added", success: true });
+  return res.status(200).json({ message: "comment added", success: true });
 };
 
 export const deleteComment = async (req: Request, res: Response) => {
